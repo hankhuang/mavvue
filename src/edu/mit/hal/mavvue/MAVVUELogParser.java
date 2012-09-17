@@ -66,11 +66,14 @@ public class MAVVUELogParser {
 				try {
 					if (line.contains("TIMEPOINT")) {
 						count++;
+						final String[] tokens = line.split(",");
+						final long time = dateFormat.parse(tokens[0]).getTime();
 						if (count >= 2) {
-							final String[] tokens = line.split(",");
-							final long time = dateFormat.parse(tokens[0]).getTime();
 							profile.trialEndTime = time;
 							profile.isCompleted = true;
+						} else if (count == 1){
+							profile.timeEnteredRoom = time;
+							profile.roomEntered = true;
 						}
 					}
 					// Parse Crashes
